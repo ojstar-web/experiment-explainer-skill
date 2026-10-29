@@ -38,7 +38,7 @@ git clone https://github.com/ojstar-web/experiment-explainer-skill.git "$HOME/.c
 
 ## 调用
 
-在 Codex 中直接说“用 `$experiment-explainer`，根据这些实验记录写一份给非专业读者的完整项目解说”，并给出项目材料位置、时间范围、听众背景和期望格式。也可以让 Codex在适合的任务中自行选择本 Skill。一个较具体的请求：
+在 Codex 中直接说“用 `$experiment-explainer`，根据这些实验记录写一份给非专业读者的完整项目解说”，并给出项目材料位置、时间范围、听众背景和期望格式。也可以让 Codex 在适合的任务中自行选择本 Skill。一个较具体的请求：
 
 > 用 `$experiment-explainer` 梳理 10 月的实验。先核对记录、配置与结果；正文要让我没有专业背景的同事读懂为什么做、怎样做、实际发现了什么。把未核实的结论标出来，并附少量真正有助于现场讲述的备注。
 
