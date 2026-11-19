@@ -56,6 +56,10 @@ Skill 的核心检查是：**读者前提、主张与证据、表图语义、叙
 
 关于 Skill 的通用结构和发现方式，可参阅 [OpenAI Skills 文档](https://developers.openai.com/api/docs/guides/tools-skills)。
 
+## 通用对话 Skill
+
+仓库另含 [`reader-first-dialogue/SKILL.md`](reader-first-dialogue/SKILL.md)。它把“先回答当前疑问、术语就地解释、事实与推断分开”的表达方式用于日常中文对话和学习答疑，不要求普通聊天套用实验报告结构。可单独安装到 `~/.codex/skills/reader-first-dialogue/`。需要论文读稿或完整实验报告时，仍使用相应的专项 Skill。
+
 ## 许可
 
 MIT，见 [LICENSE](LICENSE)。
