@@ -64,3 +64,21 @@ Skill 的核心检查是：**读者前提、主张与证据、表图语义、叙
 
 MIT，见 [LICENSE](LICENSE)。
 
+## 可选制作脚本
+
+仓库的 `scripts/` 包含两种按需使用的工具：
+
+- `render_markdown_pdf.cjs`：从一份 Markdown 导出 A4 PDF，并可用 `--preview-dir` 生成首、中、末页预览。依赖 Node.js、`marked`、`playwright`、可用的 Chromium/Edge；预览还需 Poppler 的 `pdfinfo` 和 `pdftoppm`。默认从 jsDelivr 加载 MathJax；离线使用时用 `--mathjax` 指定本地脚本。
+- `plot_series.py`：从明确指定的 CSV 数值列生成 PNG/SVG 折线图或散点图，支持误差列。依赖 Python 和 Matplotlib；不插值、不补造缺失值。
+
+示例：
+
+```bash
+npm install marked playwright
+node scripts/render_markdown_pdf.cjs report.md report.pdf --preview-dir preview
+python scripts/plot_series.py --csv results.csv --x time --y value --output result.png --xlabel "Time (ps)" --ylabel "Value"
+```
+
+这些脚本不是运行 Skill 的前提。PDF 的预览仍须人工检查，图的来源和单位仍须按原始材料核对。
+
+`reader-first-dialogue/` 是独立的日常对话 Skill：需要时单独复制到个人 skills 目录。它规定按当前问题和风险控制核查强度，不会改变已有会话的系统模式或让正在等待的任务自动切换。
