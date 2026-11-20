@@ -82,3 +82,7 @@ python scripts/plot_series.py --csv results.csv --x time --y value --output resu
 这些脚本不是运行 Skill 的前提。PDF 的预览仍须人工检查，图的来源和单位仍须按原始材料核对。
 
 `reader-first-dialogue/` 是独立的日常对话 Skill：需要时单独复制到个人 skills 目录。它要求遇到陌生词时就地用括号解释，用户听不懂时补齐前提，并把必要的不确定性说具体，避免堆叠保留语。
+
+## 从实验资料写论文
+
+[evidence-to-manuscript/](evidence-to-manuscript/SKILL.md) 是独立的论文写作 Skill。它把实验记录、图表与真实文献组织成引言、方法、结果、讨论等论文正文；证据核查留在写作底稿，正文采用直接、具体的论文语言。该 Skill 与实验解说和日常对话 Skill 分别使用，需要时可单独复制到个人或项目 skills 目录。
