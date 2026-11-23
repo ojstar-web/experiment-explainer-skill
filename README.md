@@ -58,6 +58,10 @@
 
 脚本不是运行 Skill 的前提。PDF 需要查看实际页面；图的数值、单位和来源仍要核对原始材料。
 
+## 借鉴与出处
+
+日常对话 Skill 的写法参考了 [Anti-Defensive Writing](https://github.com/Kiterlin/anti-defensive-writing) 对必要限定语和正面陈述的处理，以及 [Stop Slop](https://github.com/hardikpandya/stop-slop) 对套话与机械句式的检查。两个来源项目均采用 MIT 许可。仓库中的中文规则按本项目的任务和读者需求编写；引用来源是为了说明借鉴关系，不代表来源项目认可本仓库。
+
 ## 维护原则
 
 用具体材料检验 Skill 是否漏掉关键事实、解释步骤或必要格式。不要把一篇文章的章节和参数变成所有任务的固定模板。修改共用表达规则时，检查四个 Skill 中是否存在冲突；修改专项方法时，只检查受影响的任务。
