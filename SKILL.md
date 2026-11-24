@@ -1,6 +1,6 @@
 ---
 name: experiment-explainer
-description: 为非专业读者撰写可独立阅读的完整实验项目解说，审查项目证据并准确解释背景、设计、实施、结果、失败和结论。适用于已有实验材料的讲解；不替代实验执行、统计推断或论文审稿。
+description: 根据已有实验记录和结果图，写给非专业读者的完整项目解说；核对设计、实施、对照、数值和结论。
 ---
 
 # Experiment explainer
@@ -74,5 +74,7 @@ description: 为非专业读者撰写可独立阅读的完整实验项目解说�
 本 Skill 负责“项目证据 → 非专业读者的完整解说”。需要额外检索、统计重算、科研主张评估或正式论文写作时，分别使用适用的专用 Skill；需要 Word/PDF 等文件时再用对应制作 Skill。本 Skill 不自动启动这些工作，也不扩大执行授权。
 
 需要同源 Markdown/PDF 成品时，可用 `scripts/render_markdown_pdf.cjs` 导出并生成抽样页面预览；检查预览中的公式、图片、图文邻接和分页。需要从已有数值绘图时，可用 `scripts/plot_series.py` 明确指定 CSV 列、轴和单位，图注写明数据来源。脚本是可选工具，不能代替证据核查或人工查看页面；不为没有图表需求的任务强制运行。
+
+在本 Skill 目录运行 `node scripts/render_markdown_pdf.cjs --help` 或 `python scripts/plot_series.py --help` 可查看参数。PDF 的基本调用是 `node scripts/render_markdown_pdf.cjs input.md output.pdf`；绘图的基本调用是 `python scripts/plot_series.py --csv data.csv --x time --y value --output figure.png`。缺少依赖时按脚本报错处理，不为查看帮助先安装依赖。
 
 
