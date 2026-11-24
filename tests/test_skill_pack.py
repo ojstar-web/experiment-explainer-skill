@@ -33,6 +33,8 @@ class SkillPackTests(unittest.TestCase):
                 frontmatter = match.group(1)
                 self.assertRegex(frontmatter, rf"(?m)^name:\s*{re.escape(name)}\s*$")
                 self.assertRegex(frontmatter, r"(?m)^description:\s*\S+")
+                description = re.search(r"(?m)^description:\s*(.+)$", frontmatter).group(1)
+                self.assertLessEqual(len(description), 100, f"Discovery description is too long: {path}")
                 self.assertNotIn("TODO", body)
 
     def test_local_markdown_links_exist(self) -> None:
@@ -95,6 +97,50 @@ class SkillPackTests(unittest.TestCase):
             timeout=30,
         )
         self.assertEqual(result.returncode, 0, result.stderr)
+        help_result = subprocess.run(
+            [node, str(ROOT / "scripts" / "render_markdown_pdf.cjs"), "--help"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        self.assertEqual(help_result.returncode, 0, help_result.stderr)
+        self.assertIn("--preview-dir", help_result.stdout)
+        self.assertIn("npm install marked playwright", help_result.stdout)
+
+    def test_pdf_script_explains_missing_input_or_dependency(self) -> None:
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("Optional Node.js runtime is not installed")
+        script = str(ROOT / "scripts" / "render_markdown_pdf.cjs")
+        with tempfile.TemporaryDirectory() as temp:
+            missing = subprocess.run(
+                [node, script, str(Path(temp) / "absent.md")],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            self.assertNotEqual(missing.returncode, 0)
+            self.assertIn("Markdown source missing", missing.stderr)
+            dependencies = subprocess.run(
+                [node, "-e", "require.resolve('marked'); require.resolve('playwright')"],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if dependencies.returncode == 0:
+                return
+            source = Path(temp) / "sample.md"
+            source.write_text("# Test\n", encoding="utf-8")
+            attempted = subprocess.run(
+                [node, script, str(source)],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            self.assertNotEqual(attempted.returncode, 0)
+            self.assertIn("Missing dependency", attempted.stderr)
+            self.assertIn("npm install marked playwright", attempted.stderr)
 
 
 if __name__ == "__main__":
