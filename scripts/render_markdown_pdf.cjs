@@ -5,25 +5,42 @@ const path = require('node:path');
 const os = require('node:os');
 const { pathToFileURL } = require('node:url');
 const { spawnSync } = require('node:child_process');
-const { marked } = require('marked');
-const { chromium } = require('playwright');
 
-function usage() {
-  console.error('Usage: node render_markdown_pdf.cjs input.md [output.pdf] [--preview-dir DIR] [--mathjax FILE_OR_URL]');
-  process.exit(2);
+function usage(stream = process.stdout) {
+  stream.write('Usage: node render_markdown_pdf.cjs input.md [output.pdf] [--preview-dir DIR] [--mathjax FILE_OR_URL]\n' +
+    'Render Markdown and $...$/$$...$$ math to an A4 PDF. Relative images resolve from input.md.\n' +
+    'Options:\n  --preview-dir DIR      Render first, middle and last PDF pages as PNG (needs Poppler).\n' +
+    '  --mathjax FILE_OR_URL  Use a local MathJax script or URL; default uses jsDelivr.\n' +
+    '  -h, --help             Show this help without loading optional dependencies.\n' +
+    'Needs: Node.js, marked, playwright and a Chromium/Edge browser. Install packages: npm install marked playwright\n' +
+    'Example: node render_markdown_pdf.cjs report.md report.pdf --preview-dir preview\n');
 }
 const args = process.argv.slice(2);
-if (!args.length) usage();
+if (args.includes('-h') || args.includes('--help')) { usage(); process.exit(0); }
+if (!args.length) { usage(process.stderr); process.exit(2); }
 const input = path.resolve(args.shift());
 let output = input.replace(/\.md$/i, '.pdf');
 if (args[0] && !args[0].startsWith('--')) output = path.resolve(args.shift());
 let previewDir, mathjax = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === '--preview-dir') previewDir = path.resolve(args[++i] || '');
-  else if (args[i] === '--mathjax') mathjax = args[++i];
-  else usage();
+  if (args[i] === '--preview-dir' || args[i] === '--mathjax') {
+    const option = args[i], value = args[++i];
+    if (!value || value.startsWith('--')) { console.error(`Missing value for ${option}`); process.exit(2); }
+    if (option === '--preview-dir') previewDir = path.resolve(value);
+    else mathjax = value;
+  } else { console.error(`Unknown option: ${args[i]}`); usage(process.stderr); process.exit(2); }
 }
-if (!fs.existsSync(input)) throw new Error(`Markdown source missing: ${input}`);
+if (!fs.existsSync(input)) { console.error(`Markdown source missing: ${input}`); process.exit(2); }
+function dependency(name, install) {
+  try { return require(name); }
+  catch (error) {
+    if (error.code !== 'MODULE_NOT_FOUND' || !error.message.includes(`'${name}'`)) throw error;
+    console.error(`Missing dependency: ${name}. Install it with: ${install}`);
+    process.exit(2);
+  }
+}
+const { marked } = dependency('marked', 'npm install marked playwright');
+const { chromium } = dependency('playwright', 'npm install marked playwright');
 const md = fs.readFileSync(input, 'utf8');
 const math = [];
 const protectedMd = md.replace(/\$\$([\s\S]+?)\$\$|(?<!\$)\$([^\n$]+?)\$(?!\$)/g, (whole) => {
