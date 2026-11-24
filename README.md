@@ -33,7 +33,9 @@
 │   ├── SKILL.md
 │   └── scripts/
 ├── paper-reading-talk/
-│   └── SKILL.md
+│   ├── SKILL.md
+│   └── references/
+│       └── figure-guided-method.md
 ├── evidence-to-manuscript/
 │   └── SKILL.md
 └── reader-first-dialogue/
@@ -56,7 +58,7 @@
 - [scripts/render_markdown_pdf.cjs](scripts/render_markdown_pdf.cjs)：从 Markdown 导出 A4 PDF，可生成抽样页面预览。依赖 Node.js、`marked`、`playwright` 和可用的 Chromium/Edge；预览还需 Poppler。默认在线加载 MathJax，离线时用 `--mathjax` 指定本地脚本。
 - [scripts/plot_series.py](scripts/plot_series.py)：从明确指定的 CSV 列生成 PNG/SVG 折线图或散点图，支持误差列。依赖 Python 和 Matplotlib；不插值、不补造缺失值。
 
-脚本不是运行 Skill 的前提。PDF 需要查看实际页面；图的数值、单位和来源仍要核对原始材料。
+两个脚本分别支持 `node scripts/render_markdown_pdf.cjs --help` 和 `python scripts/plot_series.py --help`。帮助信息说明参数；缺少输入或依赖时报出具体原因。脚本不是运行 Skill 的前提。PDF 需要查看实际页面；图的数值、单位和来源仍要核对原始材料。
 
 ## 借鉴与出处
 
